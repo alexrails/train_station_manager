@@ -7,17 +7,13 @@ class Train
     @type = type
     @num_of_cars = num_of_cars
     @speed = 0
-    @route
-    @location
   end
 
-  def speed_up(v)
-    self.speed = v
+  def speed_up(speed)
+    self.speed = speed
   end
 
-  def current_speed
-    speed
-  end
+  alias :current_speed :speed
 
   def stop
     self.speed = 0
@@ -33,40 +29,41 @@ class Train
 
   def add_route(route)
     self.route = route
-    self.location = route.start_station
+    self.location = route.start_station.name
     route.start_station.add_train(self)
   end
 
   def move_back
-    self.route.stations.each_with_index do |station, index|
+    self.route.stations.each.with_index(-1) do |station, index|
       if self.location == station.name and self.location != route.start_station.name
         station.train_departure(self)
-        route.stations[index - 1].add_train(self)
+        route.stations[index].add_train(self)
       end
     end
   end
 
   def move_forward
-    self.route.stations.each_with_index do |station, index|
+    self.route.stations.each.with_index(1) do |station, index|
       if self.location == station.name and self.location != route.finish_station.name
-        route.stations[index + 1].add_train(self)
         station.train_departure(self)
+        route.stations[index].add_train(self)
+        break
       end
     end
   end
 
   def prev_station
-    self.route.stations.each_with_index do |station, index|
+    self.route.stations.each.with_index(-1) do |station, index|
       if self.location == station.name and self.location != route.start_station.name
-        puts "Preview station is #{route.stations[index - 1].name}"
+        puts "Preview station is #{route.stations[index].name}"
       end
     end
   end
 
   def next_station
-    self.route.stations.each_with_index do |station, index|
+    self.route.stations.each.with_index(1) do |station, index|
       if self.location == station.name and self.location != route.finish_station.name
-        puts "Next station is #{route.stations[index + 1].name}"
+        puts "Next station is #{route.stations[index].name}"
       end
     end
   end

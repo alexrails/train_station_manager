@@ -13,7 +13,7 @@ class Station
   end
 
   def show_trains_on_station
-    self.trains.each { |key, val| puts "#{key} : #{val.type}" }
+    self.trains.each { |train_numb, train_obj| puts "#{train_numb} : #{train_obj.type}" }
   end
 
   def show_trains_by_type
@@ -28,6 +28,6 @@ class Station
   end
 
   def train_departure(train)
-    self.trains.delete_if{ |key, val| val == train }
+    self.trains.delete_if{ |train_numb, train_obj| train_obj == train }
   end
 end
