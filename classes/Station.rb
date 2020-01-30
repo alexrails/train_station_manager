@@ -9,7 +9,7 @@ class Station
 
   def add_train(train)
     self.trains[train.number] = train
-    train.location = self.name
+    train.location = self
   end
 
   def show_trains_on_station
@@ -17,12 +17,8 @@ class Station
   end
 
   def show_trains_by_type
-    amount_pass = 0
-    amount_freight = 0
-    self.trains.each do |key, val|
-      amount_pass += 1 if "#{val.type}" == "pass"
-      amount_freight += 1 if "#{val.type}" == "freight"
-    end
+    amount_pass = self.trains.count{ |numb, tr_obj| tr_obj.type == "pass" }
+    amount_freight = self.trains.count{ |numb, tr_obj| tr_obj.type == "freight" }
     puts "Amount of passenger trains: #{amount_pass}"
     puts "Amount of freight trains: #{amount_freight}"
   end

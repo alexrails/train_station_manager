@@ -29,43 +29,28 @@ class Train
 
   def add_route(route)
     self.route = route
-    self.location = route.start_station.name
+    self.location = route.start_station
     route.start_station.add_train(self)
   end
 
   def move_back
-    self.route.stations.each.with_index(-1) do |station, index|
-      if self.location == station.name and self.location != route.start_station.name
-        station.train_departure(self)
-        route.stations[index].add_train(self)
-      end
-    end
+    location.train_departure(self)
+    prev_station.add_train(self)
   end
 
   def move_forward
-    self.route.stations.each.with_index(1) do |station, index|
-      if self.location == station.name and self.location != route.finish_station.name
-        station.train_departure(self)
-        route.stations[index].add_train(self)
-        break
-      end
-    end
+    location.train_departure(self)
+    next_station.add_train(self)
   end
 
   def prev_station
-    self.route.stations.each.with_index(-1) do |station, index|
-      if self.location == station.name and self.location != route.start_station.name
-        puts "Preview station is #{route.stations[index].name}"
-      end
-    end
+    index_st = self.route.stations.index(self.location) - 1
+    route.stations[index_st] if self.location.name != route.start_station.name
   end
 
   def next_station
-    self.route.stations.each.with_index(1) do |station, index|
-      if self.location == station.name and self.location != route.finish_station.name
-        puts "Next station is #{route.stations[index].name}"
-      end
-    end
+    index_st = self.route.stations.index(self.location) + 1
+    route.stations[index_st] if self.location.name != route.finish_station.name
   end
 
 end
