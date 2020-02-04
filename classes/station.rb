@@ -7,23 +7,24 @@ class Station
     @trains = {}
   end
 
-  def add_train(train)
-    self.trains[train.number] = train
-    train.location = self
-  end
-
-  def show_trains_on_station
-    self.trains.each { |train_numb, train_obj| puts "#{train_numb} : #{train_obj.type}" }
+   def show_trains_on_station
+    self.trains.each { |train_numb, train_obj| puts "Train number #{train_numb} : #{train_obj.type}" }
   end
 
   def show_trains_by_type
-    amount_pass = self.trains.count{ |numb, tr_obj| tr_obj.type == "pass" }
-    amount_freight = self.trains.count{ |numb, tr_obj| tr_obj.type == "freight" }
+    amount_pass = self.trains.count{ |numb, tr_obj| tr_obj.type == "passenger" }
+    amount_cargo = self.trains.count{ |numb, tr_obj| tr_obj.type == "cargo" }
     puts "Amount of passenger trains: #{amount_pass}"
-    puts "Amount of freight trains: #{amount_freight}"
+    puts "Amount of freight trains: #{amount_cargo}"
   end
 
   def train_departure(train)
     self.trains.delete_if{ |train_numb, train_obj| train_obj == train }
   end
+
+  def add_train(train)
+    self.trains[train.number] = train
+    train.location = self
+  end
+
 end

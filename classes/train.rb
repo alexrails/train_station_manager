@@ -1,12 +1,13 @@
 class Train
   attr_accessor :speed, :num_of_cars, :route, :location
-  attr_reader :number, :type
+  attr_reader :number, :type, :carriages
 
-  def initialize(number, type, num_of_cars)
+  def initialize(number)
     @number = number
     @type = type
-    @num_of_cars = num_of_cars
+    @num_of_cars = 0
     @speed = 0
+    @carriages = []
   end
 
   def speed_up(speed)
@@ -19,18 +20,24 @@ class Train
     self.speed = 0
   end
 
-  def del_cars
-    self.num_of_cars -= 1 if @speed == 0
+  def del_carriage(carriage)
+      self.carriages.delete(carriage)
+      self.num_of_cars -= 1 if @speed == 0
   end
 
-  def add_cars
-    self.num_of_cars += 1 if @speed == 0
-  end
-
-  def add_route(route)
+   def add_route(route)
     self.route = route
     self.location = route.start_station
     route.start_station.add_train(self)
+  end
+
+   def add_carriage(carriage)
+    if carriage.type == self.type
+      self.carriages << carriage
+      self.num_of_cars += 1 if @speed == 0
+    else
+      puts "Wrong type of carriage!"
+    end
   end
 
   def move_back
