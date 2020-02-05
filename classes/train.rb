@@ -1,11 +1,10 @@
 class Train
-  attr_accessor :speed, :num_of_cars, :route, :location
+  attr_accessor :speed, :route, :location
   attr_reader :number, :type, :carriages
 
   def initialize(number)
     @number = number
     @type = type
-    @num_of_cars = 0
     @speed = 0
     @carriages = []
   end
@@ -21,8 +20,7 @@ class Train
   end
 
   def del_carriage(carriage)
-      self.carriages.delete(carriage)
-      self.num_of_cars -= 1 if @speed == 0
+      self.carriages.delete(carriage)      
   end
 
    def add_route(route)
@@ -33,8 +31,7 @@ class Train
 
    def add_carriage(carriage)
     if carriage.type == self.type
-      self.carriages << carriage
-      self.num_of_cars += 1 if @speed == 0
+      self.carriages << carriage if @speed == 0      
     else
       puts "Wrong type of carriage!"
     end
