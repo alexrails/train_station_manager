@@ -1,3 +1,5 @@
+require_relative('company')
+require_relative('instance_counter')
 require_relative('train')
 require_relative('cargo_train')
 require_relative('passenger_train')
@@ -6,41 +8,40 @@ require_relative('station')
 require_relative('carriage')
 require_relative('cargo_carriage')
 require_relative('passenger_carriage')
-
 class Road
 
 MAIN_MENU = '
-             ---------------MENU-----------------
-             ------------Choice number------------
-
-             1 - Create Station and other actions
-             2 - Create Route and other actions
-             3 - Create Train and other actions
-             4 - Exit'
+  ---------------MENU-----------------
+  ------------Choice number------------
+  0 - Find Train
+  1 - Create Station and other actions
+  2 - Create Route and other actions
+  3 - Create Train and other actions
+  4 - Show instance counters
+  5 - Exit'
 STATION_MENU = '
-              -----------STATION ACTIONS----------
-
-             1 - Create Station
-             2 - Look all stations
-             3 - Look all trains of station
-             4 - Back to the menu'
+  -----------STATION ACTIONS----------
+  1 - Create Station
+  2 - Look all stations
+  3 - Look all trains of station
+  4 - Back to the menu'
 ROUTE_MENU = '
-              -----------ROUTE ACTIONS----------
-
-             1 - Create Route
-             2 - Add waystation to Route
-             3 - Look Route
-             4 - Back to menu'
+  -----------ROUTE ACTIONS----------
+  1 - Create Route
+  2 - Add waystation to Route
+  3 - Look Route
+  4 - Back to menu'
 TRAIN_MENU = '
-             1 - Set Route to Train
-             2 - Change Speed
-             3 - Stop Train
-             4 - Add Carriage
-             5 - Del Carriage
-             6 - Go to the next Station
-             7 - Go to the back Station
-             8 - Show Train info
-             9 - Back to menu'
+  0 - Set Company of Train
+  1 - Set Route to Train
+  2 - Change Speed
+  3 - Stop Train
+  4 - Add Carriage
+  5 - Del Carriage
+  6 - Go to the next Station
+  7 - Go to the back Station
+  8 - Show Train info
+  9 - Back to menu'
 
 def initialize
   @trains = []
@@ -53,6 +54,9 @@ def menu
     puts MAIN_MENU
     n = gets.chomp.to_i
     case n
+    when 0
+      puts "Enter number of Train"
+      puts "Your train is #{Train.find(gets.chomp.to_i)}"
     when 1
       station_actions
     when 2
@@ -60,6 +64,11 @@ def menu
     when 3
       train_actions
     when 4
+      puts "Counter CargoTrain instances - #{CargoTrain.instances}"
+      puts "Counter PassengerTrain instances - #{PassengerTrain.instances}"
+      puts "Counter Station instances - #{Station.instances}"
+      puts "Counter Routes instances - #{Route.instances}"
+    when 5
       exit
     end
   end
@@ -81,7 +90,7 @@ def station_actions
         puts "Station - #{@stations.last.name}"
       end
     when 2
-      @stations.each { |station| puts "#{station.name}/" }
+      Station.all
     when 3
       if @stations.length > 0
         puts 'Enter number of Station'
@@ -171,6 +180,9 @@ def other_train_actions
   n = gets.chomp.to_i
 
   case n
+  when 0
+    print "Enter Company name of Train: "
+    @active_train.company_name = gets.chomp.to_s
   when 1
     train_route
   when 2
@@ -186,7 +198,7 @@ def other_train_actions
     @active_train.add_carriage(CargoCarriage.new) if @active_train.type == "cargo"
   when 5
     wagon = @active_train.carriages.last
-    @active_train.del_carriage(wagon)    
+    @active_train.del_carriage(wagon)
   when 6
     @active_train.move_forward
     puts "Current station is #{@active_train.location.name}"
@@ -197,6 +209,7 @@ def other_train_actions
     puts "Current station is #{@active_train.location.name}"
     puts "Next station is #{@active_train.next_station}"
     puts "Pevious station is #{@active_train.prev_station}"
+    puts "Company name of Train is #{@active_train.company_name}"
   when 9
     menu
   end

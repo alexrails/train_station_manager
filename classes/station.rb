@@ -1,10 +1,18 @@
 class Station
+  include InstanceCounter
   attr_accessor :trains
   attr_reader :name
+  @@all_stations = []
+
+  def self.all
+    @@all_stations.each{ |station| puts "#{station.name}//" }
+  end
 
   def initialize(name)
     @name = name
     @trains = {}
+    @@all_stations << self
+    register_instance
   end
 
    def show_trains_on_station

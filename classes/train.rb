@@ -1,12 +1,22 @@
 class Train
+  include Company
+  include InstanceCounter
   attr_accessor :speed, :route, :location
   attr_reader :number, :type, :carriages
+
+  @@trains = {}
+
+  def self.find(number)
+    @@trains[number]
+  end
 
   def initialize(number)
     @number = number
     @type = type
     @speed = 0
     @carriages = []
+    @@trains[number] = self
+    register_instance
   end
 
   def speed_up(speed)
@@ -20,7 +30,7 @@ class Train
   end
 
   def del_carriage(carriage)
-      self.carriages.delete(carriage)      
+      self.carriages.delete(carriage) if @speed == 0
   end
 
    def add_route(route)
@@ -31,7 +41,7 @@ class Train
 
    def add_carriage(carriage)
     if carriage.type == self.type
-      self.carriages << carriage if @speed == 0      
+      self.carriages << carriage if @speed == 0
     else
       puts "Wrong type of carriage!"
     end
