@@ -5,13 +5,10 @@ module InstanceCounter
   end
 
   module ClassMethods
+    attr_reader :instances
     def instance_counter
-      @count ||= 0
-      @count += 1
-    end
-
-    def instances
-      @count
+      @instances ||= 0
+      @instances += 1
     end
 
   end

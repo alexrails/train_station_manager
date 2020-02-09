@@ -90,7 +90,7 @@ def station_actions
         puts "Station - #{@stations.last.name}"
       end
     when 2
-      Station.all
+      Station.all.each { |station| puts "#{station.name}" }
     when 3
       if @stations.length > 0
         puts 'Enter number of Station'
