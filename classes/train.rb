@@ -1,8 +1,11 @@
 class Train
   include Company
   include InstanceCounter
+  include ValidDefinition
   attr_accessor :speed, :route, :location
   attr_reader :number, :type, :carriages
+
+  NUMBER_EXAMPLE = /^[a-zа-я\d]{3}-?[a-zа-я\d]{2}/i
 
   @@trains = {}
 
@@ -17,6 +20,7 @@ class Train
     @carriages = []
     @@trains[number] = self
     register_instance
+    validate!
   end
 
   def speed_up(speed)
@@ -67,4 +71,11 @@ class Train
     route.stations[index_st] if self.location.name != route.finish_station.name
   end
 
+  private
+
+  def validate!
+    raise "Number can't be blank!" if number.nil?
+    raise "Number has wrong format!" if self.number !~ NUMBER_EXAMPLE
+    raise "Type can't be nil!" if self.type.nil?
+  end
 end

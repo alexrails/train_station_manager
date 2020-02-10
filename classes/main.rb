@@ -1,4 +1,5 @@
 require_relative('company')
+require_relative('valid_definition')
 require_relative('instance_counter')
 require_relative('train')
 require_relative('cargo_train')
@@ -56,7 +57,7 @@ def menu
     case n
     when 0
       puts "Enter number of Train"
-      puts "Your train is #{Train.find(gets.chomp.to_i)}"
+      puts "Your train is #{Train.find(gets.chomp)}"
     when 1
       station_actions
     when 2
@@ -150,18 +151,27 @@ def train_actions
   puts 'Do You want create new Train?(YES/NO): '
   answer = gets.chomp.to_s.downcase
   if answer == "yes"
-    puts 'Enter type of train:
-          1 - Passenger train
-          2 - Cargo Train'
-    type_of_train = gets.chomp.to_i
-    puts 'Enter number of train: '
-    number_of_train = gets.chomp.to_i
-
-    case type_of_train
-    when 1
-      @trains << PassengerTrain.new(number_of_train)
-    when 2
-      @trains << CargoTrain.new(number_of_train)
+    begin
+      retries ||= 0
+      puts "try ##{retries}"
+      puts 'Enter type of train:
+        1 - Passenger train
+        2 - Cargo Train'
+      type_of_train = gets.chomp.to_i
+      puts 'Enter number of train: '
+      number_of_train = gets.chomp
+      case type_of_train
+      when 1
+        @trains << PassengerTrain.new(number_of_train)
+      when 2
+        @trains << CargoTrain.new(number_of_train)
+      else
+        raise "Type of train can't be empty!"
+      end
+    rescue RuntimeError => e
+      puts e.message
+      puts "Try again!"
+      retry if (retries += 1) < 3
     end
     @temp_train = @trains.last
     puts "Your Train: #{@temp_train.number} - #{@temp_train.type}"

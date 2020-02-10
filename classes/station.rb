@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include ValidDefinition
   attr_accessor :trains
   attr_reader :name
   @@all_stations = []
@@ -13,6 +14,7 @@ class Station
     @trains = {}
     @@all_stations << self
     register_instance
+    validate!
   end
 
    def show_trains_on_station
@@ -33,6 +35,12 @@ class Station
   def add_train(train)
     self.trains[train.number] = train
     train.location = self
+  end
+
+  private
+
+  def validate!
+    raise "Name should contains more than 5 symbols!" if self.name.length < 6
   end
 
 end
