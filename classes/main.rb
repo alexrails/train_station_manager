@@ -42,7 +42,8 @@ TRAIN_MENU = '
   6 - Go to the next Station
   7 - Go to the back Station
   8 - Show Train info
-  9 - Back to menu'
+  9 - Change Carriages properties
+  10 - Back to menu'
 
 def initialize
   @trains = []
@@ -75,6 +76,14 @@ def menu
   end
 end
 
+def choice_carriage(train)
+  train.carriages_list do |carriage, index|
+    puts "##{index} - #{carriage.type}"
+    puts "Amount free sets #{carriage.amount_free_seats}" if carriage.type == "passenger"
+    puts "Amount free volume #{carriage.free_volume}" if carriage.type == "cargo"
+  end
+end
+
 def station_actions
   loop do
     puts STATION_MENU
@@ -98,7 +107,12 @@ def station_actions
         @stations.each.with_index { |station, index| puts "#{index} - #{station.name}" }
         number_of_station = gets.chomp.to_i
         @enter_station = @stations[number_of_station]
-        @enter_station.show_trains_by_type
+       # @enter_station.show_trains_by_type
+        @enter_station.trains_list do |train_numb, train_obj|
+          puts "Train number #{train_numb} : #{train_obj.type}"
+          puts "Has #{train_obj.carriages.size} carriages"
+          choice_carriage(train_obj)
+        end
       else
         puts 'List of Stations is empty!'
       end
@@ -204,8 +218,15 @@ def other_train_actions
     @active_train.stop
     puts "Train stopped!"
   when 4
-    @active_train.add_carriage(PassengerCarriage.new) if @active_train.type == "passenger"
-    @active_train.add_carriage(CargoCarriage.new) if @active_train.type == "cargo"
+    if @active_train.type == "passenger"
+      puts "Enter amount free seats: "
+      @active_train.add_carriage(PassengerCarriage.new(gets.chomp))
+      puts "Added carriage has #{@active_train.carriages.last.seats} seats."
+    else
+      puts "Enter amount free volume: "
+      @active_train.add_carriage(CargoCarriage.new(gets.chomp))
+      puts "Added carriage has volume - #{@active_train.carriages.last.seats}"
+    end
   when 5
     wagon = @active_train.carriages.last
     @active_train.del_carriage(wagon)
@@ -221,6 +242,23 @@ def other_train_actions
     puts "Pevious station is #{@active_train.prev_station}"
     puts "Company name of Train is #{@active_train.company_name}"
   when 9
+    puts "Enter number of carriages"
+    choice_carriage(@active_train)
+    @wagon = @active_train.carriages[gets.chomp.to_i]
+    puts "
+          0 - take to place
+          1 - free to place"
+    case gets.chomp.to_i
+    when 0
+      @wagon.take_seat if @wagon.type == "passenger"
+      @wagon.take_volume(t_volume) if @wagon.type =="cargo"
+      puts "You taked place!"
+    when 1
+      @wagon.make_seat if @wagon.type == "passenger"
+      puts "You made free place!"
+    end
+    other_train_actions
+  when 10
     menu
   end
   other_train_actions

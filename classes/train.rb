@@ -71,11 +71,14 @@ class Train
     route.stations[index_st] if self.location.name != route.finish_station.name
   end
 
+  def carriages_list(&block)
+    self.carriages.each.with_index { |carriage, index| block.call(carriage, index) }
+  end
+
   private
 
   def validate!
     raise "Number can't be blank!" if number.nil?
     raise "Number has wrong format!" if self.number !~ NUMBER_EXAMPLE
-    raise "Type can't be nil!" if self.type.nil?
   end
 end
