@@ -71,8 +71,8 @@ class Train
     route.stations[index_st] if self.location.name != route.finish_station.name
   end
 
-  def carriages_list(&block)
-    self.carriages.each.with_index { |carriage, index| block.call(carriage, index) }
+  def carriages_list
+    self.carriages.each.with_index { |carriage, index| yield(carriage, index) }
   end
 
   private

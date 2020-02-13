@@ -17,12 +17,12 @@ class Station
     validate!
   end
 
-  def show_trains_on_station
+  def each_trains
     self.trains.each { |train_numb, train_obj| puts "Train number #{train_numb} : #{train_obj.type}" }
   end
 
-  def trains_list(&block)
-    self.trains.each{ |train_numb, train_obj| block.call(train_numb, train_obj) }
+  def trains_list
+    self.trains.each{ |train_numb, train_obj| yield(train_numb, train_obj) }
   end
 
   def show_trains_by_type

@@ -19,8 +19,7 @@ attr_reader :max_seats
     max_seats - seats
   end
 
-  def amount_free_seats
-    seats
-  end
+  alias :amount_free_seats :seats
+
 end
 
