@@ -1,6 +1,6 @@
 class PassengerCarriage < Carriage
-attr_accessor :seats
-attr_reader :max_seats
+  attr_accessor :seats
+  attr_reader :max_seats
   def initialize(seats)
     @seats = seats.to_i
     @max_seats = @seats
@@ -8,7 +8,7 @@ attr_reader :max_seats
   end
 
   def take_seat
-   @seats = @seats - 1 if @seats != 0
+    @seats -= 1 if @seats != 0
   end
 
   def make_seat
@@ -19,7 +19,5 @@ attr_reader :max_seats
     max_seats - seats
   end
 
-  alias :amount_free_seats :seats
-
+  alias amount_free_seats seats
 end
-

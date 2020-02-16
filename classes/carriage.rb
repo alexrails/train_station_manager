@@ -5,5 +5,4 @@ class Carriage
   def info
     puts "Тип вагона: #{type}, "
   end
-
 end

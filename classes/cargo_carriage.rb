@@ -15,6 +15,5 @@ class CargoCarriage < Carriage
     max_volume - volume
   end
 
-  alias :free_volume :volume
-
+  alias free_volume volume
 end

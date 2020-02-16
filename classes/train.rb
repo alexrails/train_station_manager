@@ -5,7 +5,7 @@ class Train
   attr_accessor :speed, :route, :location
   attr_reader :number, :type, :carriages
 
-  NUMBER_EXAMPLE = /^[a-zа-я\d]{3}-?[a-zа-я\d]{2}/i
+  NUMBER_EXAMPLE = /^[a-zа-я\d]{3}-?[a-zа-я\d]{2}/i.freeze
 
   @@trains = {}
 
@@ -27,25 +27,25 @@ class Train
     self.speed = speed
   end
 
-  alias :current_speed :speed
+  alias current_speed speed
 
   def stop
     self.speed = 0
   end
 
   def del_carriage(carriage)
-      self.carriages.delete(carriage) if @speed == 0
+    carriages.delete(carriage) if @speed.zero?
   end
 
-   def add_route(route)
+  def add_route(route)
     self.route = route
     self.location = route.start_station
     route.start_station.add_train(self)
   end
 
-   def add_carriage(carriage)
-    if carriage.type == self.type
-      self.carriages << carriage if @speed == 0
+  def add_carriage(carriage)
+    if carriage.type == type
+      carriages << carriage if @speed.zero?
     else
       puts "Wrong type of carriage!"
     end
@@ -62,23 +62,23 @@ class Train
   end
 
   def prev_station
-    index_st = self.route.stations.index(self.location) - 1
-    route.stations[index_st] if self.location.name != route.start_station.name
+    index_st = route.stations.index(location) - 1
+    route.stations[index_st] if location.name != route.start_station.name
   end
 
   def next_station
-    index_st = self.route.stations.index(self.location) + 1
-    route.stations[index_st] if self.location.name != route.finish_station.name
+    index_st = route.stations.index(location) + 1
+    route.stations[index_st] if location.name != route.finish_station.name
   end
 
   def carriages_list
-    self.carriages.each.with_index { |carriage, index| yield(carriage, index) }
+    carriages.each.with_index { |carriage, index| yield(carriage, index) }
   end
 
   private
 
   def validate!
     raise "Number can't be blank!" if number.nil?
-    raise "Number has wrong format!" if self.number !~ NUMBER_EXAMPLE
+    raise "Number has wrong format!" if number !~ NUMBER_EXAMPLE
   end
 end
