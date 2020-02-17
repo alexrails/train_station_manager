@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Route
   include InstanceCounter
   include ValidDefinition
@@ -27,6 +29,6 @@ class Route
 
   def validate!
     raise "Name of station can't be blank!" if @stations.empty?
-    raise "Amount of Stations < 2!" if @stations.size < 2
+    raise 'Amount of Stations < 2!' if @stations.size < 2
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Station
   include InstanceCounter
   include ValidDefinition
@@ -28,8 +30,8 @@ class Station
   end
 
   def show_trains_by_type
-    amount_pass = trains.count { |_numb, tr_obj| tr_obj.type == "passenger" }
-    amount_cargo = trains.count { |_numb, tr_obj| tr_obj.type == "cargo" }
+    amount_pass = trains.count { |_numb, tr_obj| tr_obj.type == 'passenger' }
+    amount_cargo = trains.count { |_numb, tr_obj| tr_obj.type == 'cargo' }
     puts "Amount of passenger trains: #{amount_pass}"
     puts "Amount of freight trains: #{amount_cargo}"
   end
@@ -46,6 +48,6 @@ class Station
   private
 
   def validate!
-    raise "Name should contains more than 5 symbols!" if name.length < 6
+    raise 'Name should contains more than 5 symbols!' if name.length < 6
   end
 end

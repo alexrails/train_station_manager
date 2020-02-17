@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Train
   include Company
   include InstanceCounter
@@ -47,7 +49,7 @@ class Train
     if carriage.type == type
       carriages << carriage if @speed.zero?
     else
-      puts "Wrong type of carriage!"
+      puts 'Wrong type of carriage!'
     end
   end
 
@@ -79,6 +81,6 @@ class Train
 
   def validate!
     raise "Number can't be blank!" if number.nil?
-    raise "Number has wrong format!" if number !~ NUMBER_EXAMPLE
+    raise 'Number has wrong format!' if number !~ NUMBER_EXAMPLE
   end
 end

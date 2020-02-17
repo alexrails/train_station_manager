@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative('company')
 require_relative('valid_definition')
 require_relative('instance_counter')
@@ -18,19 +20,19 @@ class Road
   2 - Create Route and other actions
   3 - Create Train and other actions
   4 - Show instance counters
-  5 - Exit'.freeze
+  5 - Exit'
   STATION_MENU = '
   -----------STATION ACTIONS----------
   1 - Create Station
   2 - Look all stations
   3 - Look all trains of station
-  4 - Back to the menu'.freeze
+  4 - Back to the menu'
   ROUTE_MENU = '
   -----------ROUTE ACTIONS----------
   1 - Create Route
   2 - Add waystation to Route
   3 - Look Route
-  4 - Back to menu'.freeze
+  4 - Back to menu'
   TRAIN_MENU = '
   0 - Set Company of Train
   1 - Set Route to Train
@@ -42,7 +44,7 @@ class Road
   7 - Go to the back Station
   8 - Show Train info
   9 - Change Carriages properties
-  10 - Back to menu'.freeze
+  10 - Back to menu'
 
   def initialize
     @trains = []
@@ -56,7 +58,7 @@ class Road
       n = gets.chomp.to_i
       case n
       when 0
-        puts "Enter number of Train"
+        puts 'Enter number of Train'
         puts "Your train is #{Train.find(gets.chomp)}"
       when 1
         station_actions
@@ -78,10 +80,10 @@ class Road
   def choice_carriage(train)
     train.carriages_list do |carriage, index|
       puts "##{index} - #{carriage.type}"
-      if carriage.type == "passenger"
+      if carriage.type == 'passenger'
         puts "Amount free sets #{carriage.amount_free_seats}"
       end
-      if carriage.type == "cargo"
+      if carriage.type == 'cargo'
         puts "Amount free volume #{carriage.free_volume}"
       end
     end
@@ -178,7 +180,7 @@ class Road
     puts '---------------TRAIN ACTION-------------------'
     puts 'Do You want create new Train?(YES/NO): '
     answer = gets.chomp.to_s.downcase
-    if answer == "yes"
+    if answer == 'yes'
       begin
         retries ||= 0
         puts "try ##{retries}"
@@ -198,7 +200,7 @@ class Road
         end
       rescue RuntimeError => e
         puts e.message
-        puts "Try again!"
+        puts 'Try again!'
         retry if (retries += 1) < 3
       end
       @temp_train = @trains.last
@@ -219,7 +221,7 @@ class Road
 
     case n
     when 0
-      print "Enter Company name of Train: "
+      print 'Enter Company name of Train: '
       @active_train.company_name = gets.chomp.to_s
     when 1
       train_route
@@ -230,14 +232,14 @@ class Road
       puts "Current speed - #{@active_train.current_speed}"
     when 3
       @active_train.stop
-      puts "Train stopped!"
+      puts 'Train stopped!'
     when 4
-      if @active_train.type == "passenger"
-        puts "Enter amount free seats: "
+      if @active_train.type == 'passenger'
+        puts 'Enter amount free seats: '
         @active_train.add_carriage(PassengerCarriage.new(gets.chomp))
         puts "Added carriage has #{@active_train.carriages.last.seats} seats."
       else
-        puts "Enter amount free volume: "
+        puts 'Enter amount free volume: '
         @active_train.add_carriage(CargoCarriage.new(gets.chomp))
         puts "Added carriage has volume - #{@active_train.carriages.last.seats}"
       end
@@ -256,7 +258,7 @@ class Road
       puts "Pevious station is #{@active_train.prev_station}"
       puts "Company name of Train is #{@active_train.company_name}"
     when 9
-      puts "Enter number of carriages"
+      puts 'Enter number of carriages'
       choice_carriage(@active_train)
       @wagon = @active_train.carriages[gets.chomp.to_i]
       puts "
@@ -264,12 +266,12 @@ class Road
           1 - free to place"
       case gets.chomp.to_i
       when 0
-        @wagon.take_seat if @wagon.type == "passenger"
-        @wagon.take_volume(t_volume) if @wagon.type == "cargo"
-        puts "You taked place!"
+        @wagon.take_seat if @wagon.type == 'passenger'
+        @wagon.take_volume(t_volume) if @wagon.type == 'cargo'
+        puts 'You taked place!'
       when 1
-        @wagon.make_seat if @wagon.type == "passenger"
-        puts "You made free place!"
+        @wagon.make_seat if @wagon.type == 'passenger'
+        puts 'You made free place!'
       end
       other_train_actions
     when 10

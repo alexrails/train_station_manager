@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class PassengerCarriage < Carriage
   attr_accessor :seats
   attr_reader :max_seats
   def initialize(seats)
     @seats = seats.to_i
     @max_seats = @seats
-    @type = "passenger"
+    @type = 'passenger'
   end
 
   def take_seat

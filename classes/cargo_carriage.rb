@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class CargoCarriage < Carriage
   attr_accessor :volume
   attr_reader :max_volume
   def initialize(volume)
     @volume = volume.to_f
     @max_volume = @volume
-    @type = "cargo"
+    @type = 'cargo'
   end
 
   def take_volume(t_volume)
