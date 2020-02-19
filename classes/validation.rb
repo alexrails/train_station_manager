@@ -31,15 +31,15 @@ module Validation
       end
     end
 
-    def presence(options)
+    def validate_presence(options)
       raise "Attribute can't be blank!" if options[:attr].to_s.empty?
     end
 
-    def format(options)
+    def validate_format(options)
       raise 'Wrong format attribute!' if options[:attr] !~ options[:args].first
     end
 
-    def type(options)
+    def validate_type(options)
       unless options[:attr].is_a?(options[:args].first)
         raise 'Wrong class of attribute!'
       end

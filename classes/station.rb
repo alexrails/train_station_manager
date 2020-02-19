@@ -8,9 +8,9 @@ class Station
 
   NAME_EXAMPLE = /^[a-zа-я]{5}/i.freeze
 
-  validate :name, :presence
-  validate :name, :format, NAME_EXAMPLE
-  validate :name, :type, String
+  validate :name, :validate_presence
+  validate :name, :validate_format, NAME_EXAMPLE
+  validate :name, :validate_type, String
 
   @@all_stations = []
 
