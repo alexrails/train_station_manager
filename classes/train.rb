@@ -3,11 +3,14 @@
 class Train
   include Company
   include InstanceCounter
-  include ValidDefinition
+  include Validation
   attr_accessor :speed, :route, :location
   attr_reader :number, :type, :carriages
 
   NUMBER_EXAMPLE = /^[a-zа-я\d]{3}-?[a-zа-я\d]{2}/i.freeze
+
+  validate :number, :presence
+  validate :number, :format, NUMBER_EXAMPLE
 
   @@trains = {}
 
@@ -75,12 +78,5 @@ class Train
 
   def carriages_list
     carriages.each.with_index { |carriage, index| yield(carriage, index) }
-  end
-
-  private
-
-  def validate!
-    raise "Number can't be blank!" if number.nil?
-    raise 'Number has wrong format!' if number !~ NUMBER_EXAMPLE
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative('company')
-require_relative('valid_definition')
+require_relative('validation')
 require_relative('instance_counter')
 require_relative('train')
 require_relative('cargo_train')

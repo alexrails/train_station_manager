@@ -2,9 +2,16 @@
 
 class Station
   include InstanceCounter
-  include ValidDefinition
+  include Validation
   attr_accessor :trains
   attr_reader :name
+
+  NAME_EXAMPLE = /^[a-zа-я]{5}/i.freeze
+
+  validate :name, :presence
+  validate :name, :format, NAME_EXAMPLE
+  validate :name, :type, String
+
   @@all_stations = []
 
   def self.all
@@ -43,11 +50,5 @@ class Station
   def add_train(train)
     trains[train.number] = train
     train.location = self
-  end
-
-  private
-
-  def validate!
-    raise 'Name should contains more than 5 symbols!' if name.length < 6
   end
 end

@@ -2,8 +2,11 @@
 
 class Route
   include InstanceCounter
-  include ValidDefinition
+  include Validation
   attr_reader :stations, :start_station, :finish_station
+
+  validate :start_station, :presence
+  validate :finish_station, :presence
 
   def initialize(start_station, finish_station)
     @start_station = start_station
@@ -23,12 +26,5 @@ class Route
 
   def show_route
     stations.each { |station| puts station.name }
-  end
-
-  private
-
-  def validate!
-    raise "Name of station can't be blank!" if @stations.empty?
-    raise 'Amount of Stations < 2!' if @stations.size < 2
   end
 end
