@@ -7,18 +7,20 @@ module Accessors
   end
 
   module ClassMethods
-    @temp = nil
     def attr_accessor_with_history(*methods)
       methods.each do |method|
         raise TypeError, 'method name is not symbol' unless method.is_a?(Symbol)
 
         define_method(method) { instance_variable_get("@#{method}") }
         define_method("#{method}=") do |value|
-          instance_variable_set("@#{method}", value)
           @history ||= {}
           @history[method] ||= []
-          @history[method] << @temp if @temp
-          @temp = value
+          @history[method] << instance_variable_get("@#{method}") if instance_variable_get("@#{method}")
+          instance_variable_set("@#{method}", value)
+         # @history ||= {}
+         # @history[method] ||= []
+         # @history[method] << @temp if @temp
+         # @temp = value
         end
         define_method("#{method}_history") { @history[method] }
       end
